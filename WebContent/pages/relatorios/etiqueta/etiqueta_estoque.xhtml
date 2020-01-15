@@ -1,0 +1,91 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:adm="http://github.com/adminfaces"
+	template="/WEB-INF/templates/template.xhtml">
+
+	<ui:define name="head-end">
+		<style type="text/css">
+.ui-grid-row .ui-grid-col-2, .ui-grid-row .ui-grid-col-10 {
+	padding: 0.5em 0;
+	margin-left: 10px;
+}
+
+.ui-orderlist .ui-orderlist-list {
+	height: auto;
+}
+
+.ui-orderlist .ui-grid-row .ui-grid-col-2, .ui-orderlist .ui-grid-row .ui-grid-col-10
+	{
+	padding: 0;
+}
+</style>
+	</ui:define>
+
+	<ui:define name="title">
+        Etiqueta Estoque
+    </ui:define>
+
+	<ui:define name="description">
+	</ui:define>
+
+	<ui:define name="body">
+		<adm:breadcrumb title="Etiqueta" />
+
+		<h:form id="form">
+				
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+                             styleClass="ui-fluid card" id="painel" style="width:100%">
+
+					<p:outputLabel value="Nome:" for="nome" />
+					<p:inputText id="nome" value="#{beanProduto.produto.nomeproduto}">
+					</p:inputText>
+
+					<p:commandButton actionListener="#{beanProduto.filtrar()}"
+						ajax="false" icon="fa fa-check" value="Pesquisar"
+						styleClass="btn-primary" />
+
+				</p:panelGrid>
+			
+			<div class="box box-primary">
+					<h:panelGrid columns="1" id="paineld" columnClasses="left,right"
+						style="width:100%">
+						<p:dataTable id="venda" var="vendas"
+							value="#{beanProduto.lista}">
+
+							<p:column width="9%" headerText="Produto"
+								sortBy="#{vendas.codigoproduto}">
+								<h:outputText value="#{vendas.codigoproduto}" />
+							</p:column>
+							
+							<p:column width="15%" headerText="Referencia" sortBy="#{vendas.referencia}">
+								<h:outputText value="#{vendas.referencia}" />
+							</p:column>
+
+							<p:column headerText="Descrição" sortBy="#{vendas.nomeproduto}">
+								<h:outputText value="#{vendas.nomeproduto}" />
+							</p:column>
+
+							<p:column width="5%" headerText="#">
+								<p:commandButton oncomplete="PF('dlg').show();" icon="fa fa-eye" update=":foto">
+									<f:setPropertyActionListener value="#{vendas}"
+										target="#{beanProduto.produto}" />
+								</p:commandButton>
+							</p:column>
+
+						</p:dataTable>
+					</h:panelGrid>
+					</div>
+		</h:form>
+		
+		<p:dialog header="Imagem do Produto" widgetVar="dlg" modal="true" draggable="false">
+			<h:panelGrid columns="1" id="foto" >
+				<p:graphicImage value="#{beanProduto.imagem()}" id="img" cache="false"  width="230px" height="230px"/>
+			</h:panelGrid>
+		</p:dialog>
+		
+	</ui:define>
+
+</ui:composition>
