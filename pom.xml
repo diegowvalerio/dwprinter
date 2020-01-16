@@ -16,6 +16,14 @@
 	</properties>
 
 	<dependencies>
+	
+	<!-- barbecue imprimir codigo de barras na etiqueta do jasper -->
+	<dependency>
+    	<groupId>net.sourceforge.barbecue</groupId>
+    	<artifactId>barbecue</artifactId>
+    	<version>1.5-beta1</version>
+	</dependency>
+	
 		<!-- servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>

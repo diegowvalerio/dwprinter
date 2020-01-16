@@ -48,23 +48,10 @@ public class Relatorio{
 		this.response = (HttpServletResponse) this.context.getExternalContext().getResponse();
 	}
 	
-	public void imprimecheque(String nome, double valor, String cidade, String valorextenso, Date data, boolean cruzar){
-		Locale local = new Locale("pt","BR");
-		DateFormat formato = new SimpleDateFormat("MMMM",local);
-		SimpleDateFormat formato2 = new SimpleDateFormat("dd");
-		SimpleDateFormat formato3 = new SimpleDateFormat("yyyy");
-		
-		DecimalFormat df = new DecimalFormat("#,###.00");
-		String valorformatado = df.format(valor); 
-		
-		
-		String dia = formato2.format(data);
-		String mes = formato.format(data);
-		String ano = formato3.format(data);
-		
+	public void imprimeetiqueta(String produto, Integer qtde_etiqueta, Integer quantidade,Float peso){		
 		try{
 			String caminho = "";
-			caminho = Faces.getRealPath("/pages/reports/cheque/chequea4");
+			caminho = Faces.getRealPath("/pages/relatorios/etiqueta/etiqueta_estoque");
 		
 			JasperCompileManager.compileReportToFile(caminho+".jrxml");
 			JasperReport rp = (JasperReport) JRLoader.loadObjectFromFile(caminho+".jasper");
@@ -72,36 +59,26 @@ public class Relatorio{
 			Map<String, Object> params = new HashMap<String, Object>();
 			
 					
-			params.put("NOME", nome);
-			params.put("VALOR", valorformatado);
-			params.put("VALOREXTENSO", valorextenso);
-			params.put("CIDADE", cidade);
-			params.put("DIA", dia);
-			params.put("MES", mes.toUpperCase());
-			params.put("ANO", ano);
-			params.put("USUARIO", usuarioconectado());
-			params.put("CRUZAR", cruzar);
+			params.put("PRODUTOID", produto);
+			params.put("QTDE_ETIQUETA", qtde_etiqueta);
+			params.put("PESO", peso);
+			params.put("QUANTIDADE", quantidade);
 			
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			JasperPrint print = JasperFillManager.fillReport(rp, params, getConexao());
-			
-			print.setOrientation(OrientationEnum.LANDSCAPE);
+			JasperPrint print = JasperFillManager.fillReport(rp, params,  getConexao());
+						
 			
 			JasperExportManager.exportReportToPdfStream(print, baos);
-					    		
+			
 			response.reset();
 			response.setContentType("application/pdf");
 			response.setContentLength(baos.size());
-			response.setHeader("Content-disposition","attachment; filename=relatorio.pdf");
+			response.setHeader("Content-disposition","inline; filename=relatorio.pdf");
 			response.getOutputStream().write(baos.toByteArray());
 			response.getOutputStream().flush();
 			response.getOutputStream().close();
 			context.responseComplete();
-			
-			
-			
 			closeConnection();
-			
 		}catch(Exception e){
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Erro ao gerar o relatorio!"));
 		}
@@ -110,10 +87,8 @@ public class Relatorio{
 	/*conexao*/
 	private Connection getConexao(){
 		try {
-			 String connectionUrl = "jdbc:sqlserver://SIGE\\SQLEXPRESS:1433;databaseName=SATLBASE"; 
-			 
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			con = DriverManager.getConnection(connectionUrl, "sa", "@rv0re24Xcv");
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			con = DriverManager.getConnection("jdbc:oracle:thin:@MSERVER2:1521:AWORKSDB", "SEVEN", "SEVEN");
 			return con;
 			
 		} catch (SQLException e) {

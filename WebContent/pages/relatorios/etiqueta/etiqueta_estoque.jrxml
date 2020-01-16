@@ -1,32 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="etiqueta_estoque" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="045cbd0f-a0cf-4161-a0ad-3ef85054621a">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="etiqueta_estoque" pageWidth="283" pageHeight="141" columnWidth="283" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="045cbd0f-a0cf-4161-a0ad-3ef85054621a">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="JASPER_SEVEN"/>
+	<property name="com.jaspersoft.studio.unit." value="mm"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="396"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="597"/>
+	<parameter name="PRODUTOID" class="java.lang.String"/>
+	<parameter name="QTDE_ETIQUETA" class="java.lang.String"/>
+	<parameter name="PESO" class="java.lang.Float"/>
+	<parameter name="QUANTIDADE" class="java.lang.Integer"/>
 	<queryString>
-		<![CDATA[]]>
+		<![CDATA[with tbl as (select $P{PRODUTOID} id,  $P{QTDE_ETIQUETA} qtde_etiqueta from dual)
+select 
+id,
+qtde_etiqueta,
+p.produtoid,
+p.NOME_PRODUTO,
+p.referencia_produto,
+i.IMAGEM_PRODUTO
+from (
+select id
+,qtde_etiqueta
+,row_number() over (partition by id order by id) lin
+from (select *from tbl) tbl
+connect by level <= id
+order by id, qtde_etiqueta)
+inner join produto p on p.produtoid = id
+left join PRODUTO_IMAGEM i on i.produtoid = p.produtoid
+where lin <= qtde_etiqueta]]>
 	</queryString>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
-	<title>
-		<band height="79" splitType="Stretch"/>
-	</title>
-	<pageHeader>
-		<band height="35" splitType="Stretch"/>
-	</pageHeader>
-	<columnHeader>
-		<band height="61" splitType="Stretch"/>
-	</columnHeader>
+	<field name="ID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ID"/>
+	</field>
+	<field name="QTDE_ETIQUETA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="QTDE_ETIQUETA"/>
+	</field>
+	<field name="PRODUTOID" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="PRODUTOID"/>
+	</field>
+	<field name="NOME_PRODUTO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NOME_PRODUTO"/>
+	</field>
+	<field name="REFERENCIA_PRODUTO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="REFERENCIA_PRODUTO"/>
+	</field>
+	<field name="IMAGEM_PRODUTO" class="oracle.jdbc.OracleBlob">
+		<property name="com.jaspersoft.studio.field.label" value="IMAGEM_PRODUTO"/>
+	</field>
 	<detail>
-		<band height="125" splitType="Stretch"/>
+		<band height="140" splitType="Stretch">
+			<image>
+				<reportElement x="182" y="10" width="90" height="70" uuid="6d20bd39-5c85-4fd6-bde6-38ead14c9a79"/>
+				<imageExpression><![CDATA[$F{IMAGEM_PRODUTO}.getBinaryStream()]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="10" y="10" width="50" height="20" uuid="b018b8d3-24cc-4def-8607-1bbf7cf88b57"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="30" width="160" height="50" uuid="45493393-d69e-4132-b330-db3cc14a2c98"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOME_PRODUTO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="10" width="100" height="18" uuid="54461b78-6a0b-434a-94d9-8952861c3d50"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{REFERENCIA_PRODUTO}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement key="" x="10" y="90" width="130" height="39" uuid="d4fcdc6b-c225-4762-9d9a-9897d71d0d75"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code39" drawText="true" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$F{PRODUTOID}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<textField>
+				<reportElement x="148" y="108" width="60" height="21" uuid="8e9372f5-a25d-4f95-8248-564294174fd3"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PESO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="212" y="108" width="59" height="21" uuid="d6d9f387-00ce-44f7-beb4-a6565134ae29"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{QUANTIDADE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="148" y="89" width="60" height="19" uuid="f88fe9b4-bee4-485c-9eb9-faa3a0994216"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Peso]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="212" y="90" width="60" height="18" uuid="6530eff9-2504-413e-ba85-1b46ea87b945"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Qtde]]></text>
+			</staticText>
+		</band>
 	</detail>
-	<columnFooter>
-		<band height="45" splitType="Stretch"/>
-	</columnFooter>
-	<pageFooter>
-		<band height="54" splitType="Stretch"/>
-	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
 </jasperReport>

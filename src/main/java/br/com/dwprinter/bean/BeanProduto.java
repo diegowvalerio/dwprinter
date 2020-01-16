@@ -33,6 +33,10 @@ public class BeanProduto implements Serializable {
 	@Inject
 	private ServicoProduto servico;
 	private List<Produto> lista;
+	
+	Integer qtde_etiqueta;
+	Integer quantidade;
+	Float peso;
 
 	public void filtrar(){
 		lista = completaproduto(produto.getNomeproduto());
@@ -47,7 +51,7 @@ public class BeanProduto implements Serializable {
 		DefaultStreamedContent dsc = null;
 		InputStream is = null;
 		if (produto.getImagem() != null) {
-			System.out.println(produto.getNomeproduto());
+			System.out.println(produto.getCodigoproduto().toString());
 			try {
 
 				is = produto.getImagem().getBinaryStream(); 								
@@ -78,9 +82,35 @@ public class BeanProduto implements Serializable {
 	}
 
 
+	public Integer getQtde_etiqueta() {
+		return qtde_etiqueta;
+	}
+
+	public void setQtde_etiqueta(Integer qtde_etiqueta) {
+		this.qtde_etiqueta = qtde_etiqueta;
+	}
+
+	public Float getPeso() {
+		return peso;
+	}
+
+	public void setPeso(Float peso) {
+		this.peso = peso;
+	}
+
+	public Integer getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(Integer quantidade) {
+		this.quantidade = quantidade;
+	}
+
 	/* RELATORIOS */	
-	public void imprimeetiqueta() {
-		
+	public void imprimeetiqueta() {				
+		Relatorio report = new Relatorio();
+		report.imprimeetiqueta(produto.getCodigoproduto().toString(), qtde_etiqueta, quantidade,peso);
+
 	}
 	
 }

@@ -69,7 +69,7 @@
 							</p:column>
 
 							<p:column width="5%" headerText="#">
-								<p:commandButton oncomplete="PF('dlg').show();" icon="fa fa-eye" update=":foto">
+								<p:commandButton oncomplete="PF('dlg').show();" icon="fa fa-eye" update=":form:foto">
 									<f:setPropertyActionListener value="#{vendas}"
 										target="#{beanProduto.produto}" />
 								</p:commandButton>
@@ -78,14 +78,29 @@
 						</p:dataTable>
 					</h:panelGrid>
 					</div>
-		</h:form>
 		
-		<p:dialog header="Imagem do Produto" widgetVar="dlg" modal="true" draggable="false">
+		<p:dialog header="Dados do Produto" widgetVar="dlg" modal="true" draggable="false">
 			<h:panelGrid columns="1" id="foto" >
 				<p:graphicImage value="#{beanProduto.imagem()}" id="img" cache="false"  width="230px" height="230px"/>
+				
+				<p:outputLabel value="Peso:" for="peso" />
+					<p:inputText id="peso" value="#{beanProduto.peso}">
+					</p:inputText>
+
+					<p:outputLabel value="Quantidade:" for="quantidade" />
+					<p:inputText id="quantidade" value="#{beanProduto.quantidade}">
+					</p:inputText>
+					
+					<p:outputLabel value="Etiquetas:" for="qtde_etiqueta" />
+					<p:inputText id="qtde_etiqueta" value="#{beanProduto.qtde_etiqueta}">
+					</p:inputText>
 			</h:panelGrid>
+			<p:commandButton action="#{beanProduto.imprimeetiqueta()}"
+						ajax="false" icon="ui-icon-print" value="Gerar"
+						styleClass="btn-primary" />
 		</p:dialog>
 		
+		</h:form>		
 	</ui:define>
 
 </ui:composition>
