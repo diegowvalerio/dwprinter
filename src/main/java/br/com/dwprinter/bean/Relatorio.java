@@ -51,7 +51,7 @@ public class Relatorio{
 	public void imprimeetiqueta(String produto, Integer qtde_etiqueta, Integer quantidade,Float peso){		
 		try{
 			String caminho = "";
-			caminho = Faces.getRealPath("/pages/relatorios/etiqueta/etiqueta_estoque");
+			caminho = Faces.getRealPath("/pages/relatorios/etiqueta/etiqueta_estoque_zebra");
 		
 			JasperCompileManager.compileReportToFile(caminho+".jrxml");
 			JasperReport rp = (JasperReport) JRLoader.loadObjectFromFile(caminho+".jasper");
