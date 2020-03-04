@@ -54,7 +54,7 @@ public class DAOGenericoHibernate<E> implements DAOGenerico<E>, Serializable {
 						+ " i.IMAGEM_PRODUTO "
 						+ " from produto p "
 						+ " left join PRODUTO_IMAGEM i on i.produtoid = p.produtoid "
-						+ " where p.STATUS_PRODUTO = 'ATIVO' "
+						+ " where p.STATUS_PRODUTO = 'ATIVO' and p.tp_produto <> 'ACABADO' "
 						+ " and (p.nome_produto like '%"+palavra+"%' or p.referencia_produto like '%"+palavra+"%') "
 						+ " order by p.referencia_produto ");
 

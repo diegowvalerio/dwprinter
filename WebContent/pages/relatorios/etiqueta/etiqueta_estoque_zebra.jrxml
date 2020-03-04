@@ -32,8 +32,8 @@ select id
 ,qtde_etiqueta
 ,row_number() over (partition by id order by id) lin
 from (select *from tbl) tbl
-connect by level <= id
-order by id, qtde_etiqueta)
+connect by level <= qtde_etiqueta
+order by id, qtde_etiqueta) 
 inner join produto p on p.produtoid = id
 left join PRODUTO_IMAGEM i on i.produtoid = p.produtoid
 where lin <= qtde_etiqueta]]>
@@ -58,7 +58,7 @@ where lin <= qtde_etiqueta]]>
 	</field>
 	<detail>
 		<band height="141" splitType="Stretch">
-			<image>
+			<image onErrorType="Blank">
 				<reportElement x="178" y="10" width="95" height="75" uuid="6d20bd39-5c85-4fd6-bde6-38ead14c9a79"/>
 				<imageExpression><![CDATA[$F{IMAGEM_PRODUTO}.getBinaryStream()]]></imageExpression>
 			</image>

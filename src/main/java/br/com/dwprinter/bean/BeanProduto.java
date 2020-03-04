@@ -48,7 +48,7 @@ public class BeanProduto implements Serializable {
 	}
 	
 	public DefaultStreamedContent imagem() {
-		DefaultStreamedContent dsc = null;
+		DefaultStreamedContent dsc = new DefaultStreamedContent(null,"image/jpeg");
 		InputStream is = null;
 		if (produto.getImagem() != null) {
 			System.out.println(produto.getCodigoproduto().toString());
